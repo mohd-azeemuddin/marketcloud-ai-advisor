@@ -157,7 +157,7 @@ async function send(text) {
   const typ = addMsg('bot', '<div class="typing"><span></span><span></span><span></span></div>');
   const t0 = performance.now();
   try {
-    const r = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({message:text, session_id:sid})});
+    const r = await fetch('api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({message:text, session_id:sid})});
     if (!r.ok) throw new Error(r.status);
     const d = await r.json(); sid = d.session_id; typ.remove();
     addMsg('bot', md(d.answer), d.sources);
@@ -184,12 +184,12 @@ document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
   if (b.dataset.v === 'evals') loadEvals();
 });
 async function loadCrm() {
-  const [l, a] = await Promise.all([fetch('/api/leads').then(r => r.json()), fetch('/api/audit').then(r => r.json())]);
+  const [l, a] = await Promise.all([fetch('api/leads').then(r => r.json()), fetch('api/audit').then(r => r.json())]);
   $('#leads').innerHTML = l.length ? l.map(x => `<tr><td>#${x.id}</td><td>${esc(x.name)}</td><td>${esc(x.email)}</td><td>${esc(x.company)}</td><td>${esc(x.need)}</td><td>${badge(x.status)}</td></tr>`).join('') : '<tr><td colspan="6" class="mute">No leads yet</td></tr>';
   $('#audit').innerHTML = a.length ? a.map(x => `<tr><td>#${x.id}</td><td>${esc(x.action)}</td><td>${badge(x.verdict)}</td><td>${esc(x.reason)}</td></tr>`).join('') : '<tr><td colspan="4" class="mute">No actions yet</td></tr>';
 }
 async function loadEvals() {
-  const d = await fetch('/api/evals').then(r => r.json());
+  const d = await fetch('api/evals').then(r => r.json());
   const box = $('#evalbody');
   if (!d.summary) { box.innerHTML = '<h2>Evaluation</h2><p class="mute">No results yet. Run <code>python -m evals.run</code> in the terminal, then refresh.</p>'; return; }
   const pct = Math.round(100 * d.summary.passed / d.summary.total);
