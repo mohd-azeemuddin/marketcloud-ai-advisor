@@ -1,0 +1,11 @@
+﻿fastapi
+uvicorn[standard]
+langgraph
+langchain-core
+groq
+chromadb
+sentence-transformers
+beautifulsoup4
+requests
+pydantic
+python-dotenv
