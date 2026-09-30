@@ -1,12 +1,12 @@
 import json
 from pathlib import Path
-import chromadb
-from sentence_transformers import SentenceTransformer
 from collections import Counter
+import chromadb
+from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
 
 CHUNK_WORDS, OVERLAP = 180, 30
-model = SentenceTransformer("all-MiniLM-L6-v2")
 client = chromadb.PersistentClient(path="data/chroma")
+_ef = DefaultEmbeddingFunction()
 
 def chunks(text):
     w = text.split()
@@ -27,7 +27,7 @@ def load_docs():
         yield d["url"], d["title"], " ".join(kept)
     for f in Path("data/manual").glob("*.md"):
         yield f"manual:{f.name}", f.stem.replace("_", " ").title(), f.read_text(encoding="utf-8")
-        
+
 def main():
     try:
         client.delete_collection("marketcloud")
@@ -39,7 +39,9 @@ def main():
         for c in chunks(text):
             ids.append(str(len(ids))); docs.append(c)
             metas.append({"source": url, "title": title})
-    emb = model.encode(docs, normalize_embeddings=True).tolist()
+    emb = []
+    for i in range(0, len(docs), 8):
+        emb.extend([list(map(float, e)) for e in _ef(docs[i:i + 8])])
     col.add(ids=ids, documents=docs, metadatas=metas, embeddings=emb)
     print(f"Indexed {len(docs)} chunks")
 
