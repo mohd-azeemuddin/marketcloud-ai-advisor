@@ -109,6 +109,7 @@ def answer_agent(state):
             "trace": log(state, "Answer Agent", "Grounded answer generated" if found else "Not in knowledge base, sources hidden")}
 
 def solution_agent(state):
+    state["session"]["last_problem"] = state["question"][:300]
     a = chat(SOLUTION, f"Context:\n{ctx(state['docs'])}\n\nVisitor need: {state['question']}")
     return {"answer": a, "sources": top_sources(state["docs"]), "trace": log(state, "Solution Architect", "Recommendation generated")}
 
@@ -119,11 +120,12 @@ def lead_agent(state):
         return {"answer": "No problem, I've cancelled that request. Anything else I can help with?",
                 "sources": [], "trace": log(state, "Lead Agent", "Lead capture cancelled by visitor")}
     draft = s.setdefault("lead_draft", {})
-    convo = "\n".join(s.get("history", [])[-8:] + [f"Visitor: {state['question']}"])
-    got = chat(LEAD_EXTRACT, convo, json_mode=True, temperature=0)
+    got = chat(LEAD_EXTRACT, f"Visitor message: {state['question']}", json_mode=True, temperature=0)
     for k in ("name", "email", "company", "need"):
         if got.get(k):
             draft[k] = got[k]
+    if not draft.get("need") and s.get("last_problem"):
+        draft["need"] = s["last_problem"]
     s["lead_active"] = True
     missing = [f for f in ("name", "email", "need") if not draft.get(f)]
     tr = log(state, "Lead Agent", f"Collected {[k for k in draft]}; missing {missing or 'none'}")
