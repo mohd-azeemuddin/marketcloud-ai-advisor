@@ -36,3 +36,7 @@ def evals():
 @app.get("/")
 def index():
     return FileResponse("frontend/index.html")
+
+@app.get("/ping")
+def ping():
+    return {"status": "ok"}

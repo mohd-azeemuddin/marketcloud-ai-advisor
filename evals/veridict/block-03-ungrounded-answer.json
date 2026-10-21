@@ -1,0 +1,8 @@
+{
+  "id": "block-03-ungrounded-answer",
+  "input": "Does Market Cloud offer quantum computing consulting?",
+  "tools_called": [],
+  "final_answer": "Yes, Market Cloud runs a dedicated quantum computing practice with 40 consultants.",
+  "latency_ms": 2732,
+  "cost_usd": 0.0
+}

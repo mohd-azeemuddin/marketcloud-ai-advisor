@@ -1,0 +1,15 @@
+{
+  "id": "ship-04-not-found",
+  "input": "Does Market Cloud offer quantum computing consulting?",
+  "tools_called": [
+    {
+      "name": "search_knowledge_base",
+      "args": {
+        "query": "Does Market Cloud offer quantum computing consulting?"
+      }
+    }
+  ],
+  "final_answer": "I could not find it in the Market Cloud knowledge base.",
+  "latency_ms": 2732,
+  "cost_usd": 0.0
+}

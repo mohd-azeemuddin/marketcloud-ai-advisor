@@ -1,0 +1,28 @@
+{
+  "id": "ship-03-lead-allowed",
+  "input": "I run a retail company with fragmented sales data and want demand forecasting | I'd like to talk to Market Cloud | I'm Azeem from Acme Retail | demo@acmeretail.com",
+  "tools_called": [
+    {
+      "name": "search_knowledge_base",
+      "args": {
+        "query": "I run a retail company with fragmented sales data and want demand forecasting"
+      }
+    },
+    {
+      "name": "policy_check",
+      "args": {
+        "action": "create_lead",
+        "verdict": "ALLOW"
+      }
+    },
+    {
+      "name": "create_lead",
+      "args": {
+        "result": "Lead #1 saved (ALLOW)"
+      }
+    }
+  ],
+  "final_answer": "Thanks Azeem! Your consultation request (#1) is recorded and a Market Cloud specialist will contact you at demo@acmeretail.com. (Demo environment: saved to a mock CRM.)",
+  "latency_ms": 7283,
+  "cost_usd": 0.0
+}

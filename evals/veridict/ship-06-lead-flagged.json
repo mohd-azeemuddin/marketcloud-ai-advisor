@@ -1,0 +1,22 @@
+{
+  "id": "ship-06-lead-flagged",
+  "input": "I'd like a consultation. I'm test user, email test@mailinator.com, need an AI chatbot",
+  "tools_called": [
+    {
+      "name": "policy_check",
+      "args": {
+        "action": "create_lead",
+        "verdict": "FLAG"
+      }
+    },
+    {
+      "name": "create_lead",
+      "args": {
+        "result": "Lead #2 saved (FLAG)"
+      }
+    }
+  ],
+  "final_answer": "Thanks test user. Your request (#2) is recorded but flagged for human review before anyone contacts you.",
+  "latency_ms": 1552,
+  "cost_usd": 0.0
+}

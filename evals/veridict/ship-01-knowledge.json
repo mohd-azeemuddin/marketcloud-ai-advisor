@@ -1,0 +1,15 @@
+{
+  "id": "ship-01-knowledge",
+  "input": "What AI services does Market Cloud offer?",
+  "tools_called": [
+    {
+      "name": "search_knowledge_base",
+      "args": {
+        "query": "What AI services does Market Cloud offer?"
+      }
+    }
+  ],
+  "final_answer": "Market Cloud offers AI Agents for task automation, AI Strategy Assessment, Data Infrastructure modernization, Responsible AI governance, AI integration with proprietary data, AI‑powered chatbots, AI for data forecasting & prediction, AI‑powered HR management system, AI‑assisted CRM and order handling, and scalable AI‑automation solutions.",
+  "latency_ms": 6319,
+  "cost_usd": 0.0
+}
