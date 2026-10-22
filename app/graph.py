@@ -196,7 +196,7 @@ def run(question, session=None):
     session = session if session is not None else {}
     if (AWARDS.search(question) and not session.get("lead_active")
             and not INJECTION.search(question) and not PII.search(question)):
-        out = {"answer": "Market Cloud lists its awards, recognitions and certifications on its Awards & Recognitions page, mostly as images, so I can't read the details here. You can see them at " + AWARDS_URL,
+        out = {"answer": "I couldn't find specific award or certification details in my knowledge base, so I won't guess. The official Awards & Recognitions page may have them: " + AWARDS_URL,
                "sources": [AWARDS_URL], "route": "pointer",
                "trace": [ent("Orchestrator", "Awards/certification question: pointing to the official Awards & Recognitions page")]}
     else:
