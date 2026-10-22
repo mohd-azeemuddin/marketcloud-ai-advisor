@@ -189,10 +189,19 @@ for n in ("answer_agent", "solution_agent", "lead_agent", "refuse", "out_of_scop
     g.add_edge(n, END)
 graph = g.compile()
 
+AWARDS = re.compile(r"\b(awards?|recognitions?|achievements?|certifications?|certified|iso)\b", re.I)
+AWARDS_URL = "https://marketcloud.co.uk/awards-recognitions/"
+
 def run(question, session=None):
     session = session if session is not None else {}
-    out = graph.invoke({"question": question, "trace": [], "session": session})
+    if (AWARDS.search(question) and not session.get("lead_active")
+            and not INJECTION.search(question) and not PII.search(question)):
+        out = {"answer": "Market Cloud lists its awards, recognitions and certifications on its Awards & Recognitions page, mostly as images, so I can't read the details here. You can see them at " + AWARDS_URL,
+               "sources": [AWARDS_URL], "route": "pointer",
+               "trace": [ent("Orchestrator", "Awards/certification question: pointing to the official Awards & Recognitions page")]}
+    else:
+        out = graph.invoke({"question": question, "trace": [], "session": session})
+        if session.get("lead_active") and out.get("route") != "lead":
+            out["answer"] += "\n\nYour consultation request is still open. Share the missing details to continue, or say 'cancel'."
     session.setdefault("history", []).extend([f"Visitor: {PII.sub('[redacted]', question)}", f"Assistant: {out['answer']}"])
-    if session.get("lead_active") and out.get("route") != "lead":
-        out["answer"] += "\n\nYour consultation request is still open. Share the missing details to continue, or say 'cancel'."
     return out
